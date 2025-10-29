@@ -1,0 +1,79 @@
+<div class="card">
+  <h2>Módulo de Reserva de Viagens</h2>
+
+  <form [formGroup]="reservaForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="destino">Destino (Obrigatório)</label>
+      <select id="destino" formControlName="destino"
+        [ngClass]="{ 'is-invalid': f['destino'].invalid && (f['destino'].dirty || f['destino'].touched) }">
+        <option value="" disabled>Selecione um Destino</option>
+        <option *ngFor="let dest of destinos" [value]="dest">{{ dest }}</option>
+      </select>
+      <div *ngIf="f['destino'].errors && (f['destino'].dirty || f['destino'].touched)" class="error-message">
+        <div *ngIf="f['destino'].errors['required']">
+          O campo Destino é obrigatório.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataIda">Data de Ida (Obrigatória)</label>
+      <input type="date" id="dataIda" formControlName="dataIda"
+        [ngClass]="{ 'is-invalid': f['dataIda'].invalid && (f['dataIda'].dirty || f['dataIda'].touched) }">
+      <div *ngIf="f['dataIda'].errors && (f['dataIda'].dirty || f['dataIda'].touched)" class="error-message">
+        <div *ngIf="f['dataIda'].errors['required']">
+          A Data de Ida é obrigatória.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataVolta">Data de Volta (Obrigatória)</label>
+      <input type="date" id="dataVolta" formControlName="dataVolta"
+        [ngClass]="{ 'is-invalid': f['dataVolta'].invalid && (f['dataVolta'].dirty || f['dataVolta'].touched) }">
+      <div *ngIf="f['dataVolta'].errors && (f['dataVolta'].dirty || f['dataVolta'].touched)" class="error-message">
+        <div *ngIf="f['dataVolta'].errors['required']">
+          A Data de Volta é obrigatória.
+        </div>
+      </div>
+      <div *ngIf="reservaForm.errors?.['dataInvalida'] && (f['dataVolta'].dirty || f['dataVolta'].touched)" class="error-message">
+        A data de volta deve ser posterior à data de ida.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="numPassageiros">Número de Passageiros (1 a 5)</label>
+      <input type="number" id="numPassageiros" formControlName="numPassageiros" min="1" max="5"
+        [ngClass]="{ 'is-invalid': f['numPassageiros'].invalid && (f['numPassageiros'].dirty || f['numPassageiros'].touched) }">
+      <div *ngIf="f['numPassageiros'].errors && (f['numPassageiros'].dirty || f['numPassageiros'].touched)" class="error-message">
+        <div *ngIf="f['numPassageiros'].errors['required']">
+          O número de passageiros é obrigatório.
+        </div>
+        <div *ngIf="f['numPassageiros'].errors['min'] || f['numPassageiros'].errors['max']">
+          O número de passageiros deve estar entre 1 e 5.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="emailContato">E-mail de Contato (Válido)</label>
+      <input type="email" id="emailContato" formControlName="emailContato"
+        [ngClass]="{ 'is-invalid': f['emailContato'].invalid && (f['emailContato'].dirty || f['emailContato'].touched) }">
+      <div *ngIf="f['emailContato'].errors && (f['emailContato'].dirty || f['emailContato'].touched)" class="error-message">
+        <div *ngIf="f['emailContato'].errors['required']">
+          O E-mail de Contato é obrigatório.
+        </div>
+        <div *ngIf="f['emailContato'].errors['email']">
+          Insira um e-mail válido (exemplo@dominio.com).
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="reservaForm.invalid" class="submit-button">
+      Reservar Viagem
+    </button>
+    <p *ngIf="reservaForm.invalid" class="hint-text">Preencha todos os campos corretamente para habilitar o botão.</p>
+
+  </form>
+</div>
